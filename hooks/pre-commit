@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Ejecutar dotnet format para formatear el código
+dotnet format
+
+# Ejecutar dotnet build para asegurarse de que el código se construya correctamente
+dotnet build
+
+# Verificar si los comandos anteriores tuvieron éxito
+if [ $? -ne 0 ]; then
+  echo "Linting or build failed. Commit aborted."
+  exit 1
+fi
