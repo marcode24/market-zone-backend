@@ -1,5 +1,10 @@
-using MediatR;
-
 namespace Domain.Abstractions;
 
-public interface IDomainEvent : INotification { }
+using MediatR;
+
+/// <summary>
+/// Represents a domain event.
+/// </summary>
+public interface IDomainEvent : INotification
+{
+}
