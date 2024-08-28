@@ -28,6 +28,7 @@ dotnet_diagnostic.SA1101.severity = none   # Requiere 'this.' para acceder a mie
 dotnet_diagnostic.SA1503.severity = none   # Declaraciones de llaves en la misma línea
 dotnet_diagnostic.SA1633.severity = none   # Archivos deben tener un encabezado de licencia
 dotnet_diagnostic.SA1313.severity = none   # Parámetros deben comenzar con minúscula
+dotnet_diagnostic.SA1000.severity = none   # Declaraciones de espacios en blanco
 
 # Configuración de estilo de código general
 dotnet_diagnostic.CA1014.severity = error  # Ejemplo: Requerir que las clases tengan atributos de asamblea
