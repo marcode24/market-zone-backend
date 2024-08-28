@@ -3,6 +3,7 @@ namespace Domain.Entities.Users.ValueObjects;
 /// <summary>
 /// Represents the last name value object.
 /// </summary>
+/// <param name="Value">The value of the last name.</param>
 public record LastName(string Value)
 {
   /// <summary>

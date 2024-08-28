@@ -1,5 +1,4 @@
-namespace Domain.Entities.Users.ValueObjects;
-
+namespace Domain.Shared.ValueObjects;
 /// <summary>
 /// Represents a name value object.
 /// </summary>
