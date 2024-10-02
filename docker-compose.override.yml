@@ -1,0 +1,14 @@
+version: "3.4"
+
+services:
+  database:
+    container_name: market_zone_db
+    environment:
+      POSTGRES_DB: market_db
+      POSTGRES_USER: market_usr
+      POSTGRES_PASSWORD: Mysecret123$
+    restart: always
+    volumes:
+      - ./containers/database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
