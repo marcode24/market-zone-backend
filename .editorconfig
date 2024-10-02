@@ -15,24 +15,3 @@ insert_final_newline = true
 
 # Forzar llaves en nuevas líneas
 brace_style = next_line
-
-# Tratar las advertencias de StyleCop como errores
-dotnet_diagnostic.SA1300.severity = error  # Nombres de miembros deben comenzar con mayúscula
-dotnet_diagnostic.SA1600.severity = error  # Comentarios XML en elementos públicos requeridos
-dotnet_diagnostic.SA1200.severity = error  # Usings deben estar dentro del namespace
-dotnet_diagnostic.SA1024.severity = error  # Espacios en blanco entre miembros
-dotnet_diagnostic.SA1009.severity = error  # Parentesis en métodos deben tener espacio
-
-# Configuración de estilo de código general
-dotnet_diagnostic.SA1101.severity = none   # Requiere 'this.' para acceder a miembros de instancia
-dotnet_diagnostic.SA1503.severity = none   # Declaraciones de llaves en la misma línea
-dotnet_diagnostic.SA1633.severity = none   # Archivos deben tener un encabezado de licencia
-dotnet_diagnostic.SA1313.severity = none   # Parámetros deben comenzar con minúscula
-dotnet_diagnostic.SA1000.severity = none   # Declaraciones de espacios en blanco
-
-# Configuración de estilo de código general
-dotnet_diagnostic.CA1014.severity = error  # Ejemplo: Requerir que las clases tengan atributos de asamblea
-dotnet_diagnostic.CA1822.severity = error  # Marcar métodos que no acceden a la instancia como estáticos
-
-# Configuración adicional de formateo
-csharp_new_line_before_open_brace = all  # Llaves abiertas en nueva línea
