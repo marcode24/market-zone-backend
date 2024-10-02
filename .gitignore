@@ -363,6 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Ignore the example configuration file
+appsettings.json
 appsettings.*.json
 
 # Not ignore the example configuration file
