@@ -1,3 +1,4 @@
+using Api.Middlewares;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,5 +22,10 @@ public static class ApplicationBuilderExtensions
       var logger = loggerFactory.CreateLogger<Program>();
       logger.LogError(ex, "An error occurred while migrating the database.");
     }
+  }
+
+  public static void UseCustomExceptionHandler(this IApplicationBuilder app)
+  {
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
   }
 }

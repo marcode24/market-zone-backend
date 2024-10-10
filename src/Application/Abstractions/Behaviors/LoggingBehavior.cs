@@ -2,7 +2,6 @@ using Domain.Abstractions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-
 namespace Application.Abstractions.Behaviors;
 
 public class LoggingBehavior<TRequest, TResponse>

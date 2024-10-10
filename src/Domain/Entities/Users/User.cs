@@ -1,5 +1,6 @@
 namespace Domain.Entities.Users;
 
+using System.ComponentModel;
 using Domain.Abstractions;
 using Domain.Entities.Roles;
 using Domain.Entities.Roles.ValueObjects;
@@ -27,6 +28,7 @@ public sealed class User : Entity<UserId>
   }
   private User() { }
 
+  [DisplayName("nombre")]
   public Name? Name { get; private set; }
   public LastName? LastName { get; private set; }
   public Email? Email { get; private set; }
@@ -34,16 +36,25 @@ public sealed class User : Entity<UserId>
   public Photo? Photo { get; private set; }
   public RoleId? RoleId { get; private set; }
   public Role? Role { get; private set; }
-  public IReadOnlyCollection<Role>? Roles => roles.ToList();
 
-  public static User Create(Name name, LastName lastName, Email email, Password password, Photo photo)
+  public static User Create(
+    Name name,
+    LastName lastName,
+    Email email,
+    Password password,
+    Photo photo)
   {
     var user = new User(name, lastName, email, password, photo);
     user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id!));
 
     return user;
   }
-  public void Update(Name name, LastName lastName, Email email, Password password, Photo photo)
+  public void Update(
+    Name name,
+    LastName lastName,
+    Email email,
+    Password password,
+    Photo photo)
   {
     Name = name;
     LastName = lastName;

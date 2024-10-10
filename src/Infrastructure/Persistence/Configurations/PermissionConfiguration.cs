@@ -1,5 +1,6 @@
 namespace Infrastructure.Persistence.Configurations;
 
+using Application.Configurations.Permissions;
 using Domain.Entities.Permissions;
 using Domain.Entities.Permissions.ObjectValues;
 using Domain.Entities.Roles;
@@ -12,37 +13,69 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
 {
   public void Configure(EntityTypeBuilder<Permission> builder)
   {
-    builder.ToTable(Tables.Permissions, Schemas.Market);
+    builder
+      .ToTable(Tables.Permissions, Schemas.Market);
 
-    builder.HasKey(permission => permission.Id);
+    builder
+      .HasKey(permission => permission.Id);
 
-    builder.Property(permission => permission.Id)
+    builder
+      .Property(permission => permission.Id)
       .ValueGeneratedOnAdd()
-      .HasConversion(permissionId => permissionId!.Value, value => new PermissionId(value));
+      .HasConversion(
+        permissionId => permissionId!.Value,
+        value => new PermissionId(value)
+      );
 
-    builder.Property(permission => permission.Name)
-      .HasMaxLength(50)
-      .HasColumnType("varchar(50)")
+    builder
+      .Property(permission => permission.Name)
+      .HasMaxLength(PermissionConfigurations.NameMaxLength)
+      .HasColumnType($"varchar({PermissionConfigurations.NameMaxLength})")
       .IsRequired()
-      .HasConversion(permission => permission!.Value, value => new Name(value));
+      .HasConversion(
+        permission => permission!.Value,
+        value => new Name(value)
+      );
 
-    builder.Property(permission => permission.Type)
-      .HasMaxLength(50)
-      .HasColumnType("varchar(50)")
+    builder
+      .Property(permission => permission.Type)
+      .HasMaxLength(PermissionConfigurations.TypeMaxLength)
+      .HasColumnType($"varchar({PermissionConfigurations.TypeMaxLength})")
       .IsRequired()
-      .HasConversion(permission => permission!.Value, value => new TypePermission(value));
+      .HasConversion(
+        permission => permission!.Value.ToUpper(),
+        value => new TypePermission(value)
+      );
 
-    builder.Property(user => user.CreatedAt)
-      .HasColumnType("timestamp")
+    builder
+      .Property(permission => permission.IsActive)
+      .HasColumnType("boolean")
+      .HasDefaultValue(true);
+
+    builder
+      .Property(permission => permission.IsDeleted)
+      .HasColumnType("boolean")
+      .HasDefaultValue(false);
+
+    builder
+      .Property(permission => permission.CreatedAt)
+      .HasColumnType("timestamptz")
       .HasDefaultValueSql("now()")
       .ValueGeneratedOnAdd();
 
-    builder.Property(user => user.UpdatedAt)
-      .HasColumnType("timestamp")
+    builder
+      .Property(permission => permission.UpdatedAt)
+      .HasColumnType("timestamptz")
       .HasDefaultValueSql("now()")
       .ValueGeneratedOnUpdate();
 
-    builder.HasMany(permission => permission.Roles)
+    builder
+      .Property(permission => permission.DeletedAt)
+      .HasColumnType("timestamptz")
+      .IsRequired(false);
+
+    builder
+      .HasMany(permission => permission.Roles)
       .WithMany(role => role.Permissions)
       .UsingEntity<RolePermission>(
         j => j

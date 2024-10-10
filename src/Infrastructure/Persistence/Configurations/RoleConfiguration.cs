@@ -1,5 +1,6 @@
 namespace Infrastructure.Persistence.Configurations;
 
+using Application.Configurations.Roles;
 using Domain.Entities.Roles;
 using Domain.Entities.Roles.ValueObjects;
 using Domain.Shared.ValueObjects;
@@ -11,35 +12,44 @@ internal sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
 {
   public void Configure(EntityTypeBuilder<Role> builder)
   {
-    builder.ToTable(Tables.Roles, Schemas.Market);
+    builder
+      .ToTable(Tables.Roles, Schemas.Market);
 
-    builder.HasKey(role => role.Id);
+    builder
+      .HasKey(role => role.Id);
 
-    builder.Property(role => role.Id)
+    builder
+      .Property(role => role.Id)
       .ValueGeneratedOnAdd()
-      .HasConversion(id => id!.Value, value => new RoleId(value));
+      .HasConversion(
+        id => id!.Value,
+        value => new RoleId(value)
+      );
 
-    builder.Property(role => role.Name)
-      .HasMaxLength(50)
-      .HasColumnType("varchar(50)")
+    builder
+      .Property(role => role.Name)
+      .HasMaxLength(RoleConfigurations.NameMaxLength)
+      .HasColumnType($"varchar({RoleConfigurations.NameMaxLength})")
       .IsRequired()
-      .HasConversion(role => role!.Value, value => new Name(value));
+      .HasConversion(
+        role => role!.Value.ToUpper(),
+        value => new Name(value)
+      );
 
-    builder.Property(role => role.CreatedAt)
-      .HasColumnType("timestamp")
+    builder
+      .Property(role => role.CreatedAt)
+      .HasColumnType("timestamptz")
       .HasDefaultValueSql("now()")
       .ValueGeneratedOnAdd();
 
-    builder.Property(role => role.UpdatedAt)
-      .HasColumnType("timestamp")
+    builder
+      .Property(role => role.UpdatedAt)
+      .HasColumnType("timestamptz")
       .HasDefaultValueSql("now()")
       .ValueGeneratedOnUpdate();
 
-    builder.HasMany(role => role.Users)
-      .WithOne(user => user.Role)
-      .HasForeignKey(user => user.RoleId);
-
-    builder.HasMany(role => role.Permissions)
+    builder
+      .HasMany(role => role.Permissions)
       .WithMany(permission => permission.Roles)
       .UsingEntity<RolePermission>(
         j => j
