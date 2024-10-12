@@ -29,8 +29,8 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
 
     builder
       .Property(permission => permission.Name)
-      .HasMaxLength(PermissionConfigurations.NameMaxLength)
-      .HasColumnType($"varchar({PermissionConfigurations.NameMaxLength})")
+      .HasMaxLength(PermissionValidationConfig.NameMaxLength)
+      .HasColumnType($"varchar({PermissionValidationConfig.NameMaxLength})")
       .IsRequired()
       .HasConversion(
         permission => permission!.Value,
@@ -39,8 +39,8 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
 
     builder
       .Property(permission => permission.Type)
-      .HasMaxLength(PermissionConfigurations.TypeMaxLength)
-      .HasColumnType($"varchar({PermissionConfigurations.TypeMaxLength})")
+      .HasMaxLength(PermissionValidationConfig.TypeMaxLength)
+      .HasColumnType($"varchar({PermissionValidationConfig.TypeMaxLength})")
       .IsRequired()
       .HasConversion(
         permission => permission!.Value.ToUpper(),
