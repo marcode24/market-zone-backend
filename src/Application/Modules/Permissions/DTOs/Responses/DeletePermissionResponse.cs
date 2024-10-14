@@ -1,3 +1,5 @@
+namespace Application.Modules.Permissions.DTOs.Responses;
+
 using Domain.Entities.Permissions;
 
 public record DeletePermissionResponse(

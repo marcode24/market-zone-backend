@@ -1,5 +1,6 @@
 using Application.Abstractions.Messaging;
 using Application.Core.Responses;
+using Application.Modules.Permissions.DTOs.Responses;
 using Domain.Abstractions;
 using Domain.Entities.Permissions;
 using Domain.Entities.Permissions.ObjectValues;
