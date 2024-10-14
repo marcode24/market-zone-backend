@@ -35,5 +35,10 @@ public abstract class Entity<TEntityId> : IEntity
     IsDeleted = true;
     DeletedAt = DateTime.UtcNow;
   }
+  public void RestoreSoftDelete()
+  {
+    IsDeleted = false;
+    DeletedAt = null;
+  }
   protected void RaiseDomainEvent(IDomainEvent domainEvent) => domainEvents.Add(domainEvent);
 }

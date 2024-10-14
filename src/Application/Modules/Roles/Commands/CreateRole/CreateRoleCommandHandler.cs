@@ -56,6 +56,7 @@ internal class RegisterRoleCommandHandler
 
     var result = CreateResponse<CreateRoleResponse>.Success(
       CreateRoleResponse.FromEntity(newRole),
+      "Role created successfully",
       newRole.Id.Value
     );
 

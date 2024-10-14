@@ -14,7 +14,9 @@ internal class DeletePermissionCommandHandler
   private readonly IPermissionRepository _permissionRepository;
   private readonly IUnitOfWork _unitOfWork;
 
-  public DeletePermissionCommandHandler(IPermissionRepository permissionRepository, IUnitOfWork unitOfWork)
+  public DeletePermissionCommandHandler(
+    IPermissionRepository permissionRepository,
+    IUnitOfWork unitOfWork)
   {
     _permissionRepository = permissionRepository;
     _unitOfWork = unitOfWork;
@@ -32,12 +34,14 @@ internal class DeletePermissionCommandHandler
     if (permission is null)
       return Result.Failure<CreateResponse<DeletePermissionResponse>>(PermissionErrors.NotFound);
 
-    permission.Delete();
+    permission.SoftDelete();
 
     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
     var result = CreateResponse<DeletePermissionResponse>.Success(
-      DeletePermissionResponse.FromEntity(permission)
+      DeletePermissionResponse.FromEntity(permission),
+      PermissionMessages.Deleted.Message,
+      permission.Id!.Value
     );
 
     return Result.Success(result);

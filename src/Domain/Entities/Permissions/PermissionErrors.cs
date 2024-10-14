@@ -13,4 +13,5 @@ public static class PermissionErrors
   public static readonly Error NotFound = EntityErrors.NotFound.Format(nameof(Permission));
   public static readonly Error ErrorCreating = EntityErrors.ErrorCreating.Format(nameof(Permission));
   public static readonly Error SuccessCreating = EntityErrors.SuccessCreating.Format(nameof(Permission));
+  public static readonly Error NotDeleted = EntityErrors.NotDeleted.Format(nameof(Permission));
 }

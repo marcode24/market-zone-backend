@@ -9,6 +9,6 @@ public class CreateResponse<T>(T createdItem, string message, int? id = null)
 
   public int? Id { get; set; } = id;
 
-  public static CreateResponse<T> Success(T item, int? id = null, string message = "") =>
+  public static CreateResponse<T> Success(T item, string message = "", int? id = null) =>
     new(item, message, id);
 }

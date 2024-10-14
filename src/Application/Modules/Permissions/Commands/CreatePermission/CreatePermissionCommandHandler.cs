@@ -40,6 +40,7 @@ internal class CreatePermissionCommandHandler
 
     var result = CreateResponse<CreatePermissionResponse>.Success(
       CreatePermissionResponse.FromEntity(newPermission),
+      PermissionMessages.Created.Message,
       newPermission.Id.Value
     );
 

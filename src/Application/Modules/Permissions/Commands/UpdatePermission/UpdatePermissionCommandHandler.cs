@@ -44,7 +44,8 @@ internal class UpdatePermissionCommandHandler
     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
     var result = UpdateResponse<UpdatePermissionResponse>.Success(
-      UpdatePermissionResponse.FromEntity(permission)
+      UpdatePermissionResponse.FromEntity(permission),
+      PermissionMessages.Updated.Message
     );
 
     return Result.Success(result);

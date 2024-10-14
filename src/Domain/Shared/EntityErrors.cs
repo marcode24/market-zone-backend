@@ -16,4 +16,9 @@ public static class EntityErrors
     "SUCCESS_CREATING",
     "{0} created successfully."
   );
+
+  public static readonly Error NotDeleted = new(
+    "NOT_DELETED",
+    "{0} is not deleted."
+  );
 }

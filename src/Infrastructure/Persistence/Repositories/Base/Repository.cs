@@ -17,6 +17,13 @@ internal abstract class Repository<TEntity, TEntityId>(ApplicationDbContext dbCo
       .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
   }
 
+  public async Task<TEntity?> GetByIdIncludingDeletedAsync(TEntityId id, CancellationToken cancellationToken)
+  {
+    return await _dbContext.Set<TEntity>()
+      .IgnoreQueryFilters()
+      .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+  }
+
   public virtual void Add(TEntity entity)
   {
     _dbContext.Set<TEntity>().Add(entity);
