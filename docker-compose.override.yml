@@ -1,8 +1,8 @@
 version: "3.4"
 
 services:
-  database:
-    container_name: market_zone_db
+  marketzonedb:
+    container_name: marketzonedb
     environment:
       POSTGRES_DB: market_db
       POSTGRES_USER: market_usr
@@ -12,3 +12,14 @@ services:
       - ./containers/database:/var/lib/postgresql/data
     ports:
       - 5432:5432
+
+  marketzoneapi:
+    container_name: marketzoneapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+      - "ConectionStrings__DataBaseConnection=Host=marketzonedb;Port=5432;Database=market_db;Username=market_usr;Password=Mysecret123$"
+    depends_on:
+      - marketzonedb
+    ports:
+      - 80:5000

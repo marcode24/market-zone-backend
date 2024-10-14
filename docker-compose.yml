@@ -1,5 +1,11 @@
 version: "3.4"
 
 services:
-  database:
+  marketzonedb:
     image: postgres:16.0
+
+  marketzoneapi:
+    image: ${DOCKER_REGISTRY-}marketzoneapi
+    build:
+      context: .
+      dockerfile: src/Api/Dockerfile
