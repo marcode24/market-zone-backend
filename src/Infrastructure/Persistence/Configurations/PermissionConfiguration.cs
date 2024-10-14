@@ -66,8 +66,7 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
     builder
       .Property(permission => permission.UpdatedAt)
       .HasColumnType("timestamptz")
-      .HasDefaultValueSql("now()")
-      .ValueGeneratedOnUpdate();
+      .HasDefaultValueSql("now()");
 
     builder
       .Property(permission => permission.DeletedAt)

@@ -1,6 +1,6 @@
 using Api.Common;
 using Api.Utils;
-using Application.Modules.Roles.Commands.RegisterRole;
+using Application.Modules.Roles.Commands.CreateRole;
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +21,10 @@ public class RolesController : ControllerBase
   [HttpPost("register")]
   [MapToApiVersion(ApiVersions.V1)]
   public async Task<IActionResult> Register(
-    [FromBody] RegisterRoleRequest request,
+    [FromBody] CreateRoleRequest request,
     CancellationToken cancellationToken)
   {
-    var registerRoleCommand = new RegisterRoleCommand(
+    var registerRoleCommand = new CreateRoleCommand(
       request.Name,
       request.Permissions
     );

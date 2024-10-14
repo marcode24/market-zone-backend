@@ -1,4 +1,5 @@
 using Domain.Abstractions;
+using Infrastructure.Persistence;
 using Infrastructure.Persistence.Specifications;
 using Microsoft.EntityFrameworkCore;
 

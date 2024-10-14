@@ -30,7 +30,39 @@ public sealed class Permission : Entity<PermissionId>
   public static Permission Create(Name name, TypePermission type)
   {
     var permission = new Permission(name, type);
-
     return permission;
+  }
+
+  public void Update(
+    Name? name,
+    TypePermission? type,
+    bool? isActive
+  )
+  {
+    bool hasUpdated = false;
+
+    if (isActive.HasValue
+      && isActive.Value != IsActive)
+    {
+      ChangeStatus(isActive.Value);
+      hasUpdated = true;
+    }
+
+    if (!string.IsNullOrWhiteSpace(name?.Value)
+      && name.Value != Name?.Value)
+    {
+      Name = name;
+      hasUpdated = true;
+    }
+
+    if (!string.IsNullOrWhiteSpace(type?.Value)
+      && type.Value != Type?.Value)
+    {
+      Type = type;
+      hasUpdated = true;
+    }
+
+    if (hasUpdated)
+      UpdateTimestamps();
   }
 }

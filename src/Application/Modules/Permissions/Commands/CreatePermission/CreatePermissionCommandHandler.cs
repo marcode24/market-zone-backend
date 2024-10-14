@@ -1,20 +1,21 @@
 using Application.Abstractions.Messaging;
 using Application.Core.Responses;
+using Application.Modules.Permissions.DTOs.Responses;
 using Domain.Abstractions;
 using Domain.Entities.Permissions;
 using Domain.Entities.Permissions.ObjectValues;
 using Domain.Repositories.Permissions;
 using Domain.Shared.ValueObjects;
 
-namespace Application.Modules.Permissions.Commands.RegisterPermission;
+namespace Application.Modules.Permissions.Commands.CreatePermission;
 
-internal class RegisterPermissionCommandHandler
-  : ICommandHandler<RegisterPermissionCommand, CreateResponse<RegisterPermissionResponse>>
+internal class CreatePermissionCommandHandler
+  : ICommandHandler<CreatePermissionCommand, CreateResponse<CreatePermissionResponse>>
 {
   private readonly IPermissionRepository _permissionRepository;
   private readonly IUnitOfWork _unitOfWork;
 
-  public RegisterPermissionCommandHandler(
+  public CreatePermissionCommandHandler(
     IPermissionRepository permissionRepository,
     IUnitOfWork unitOfWork)
   {
@@ -22,8 +23,8 @@ internal class RegisterPermissionCommandHandler
     _unitOfWork = unitOfWork;
   }
 
-  public async Task<Result<CreateResponse<RegisterPermissionResponse>>> Handle(
-    RegisterPermissionCommand request,
+  public async Task<Result<CreateResponse<CreatePermissionResponse>>> Handle(
+    CreatePermissionCommand request,
     CancellationToken cancellationToken)
   {
     var newPermission = Permission.Create(
@@ -35,10 +36,10 @@ internal class RegisterPermissionCommandHandler
     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
     if (newPermission.Id is null)
-      return Result.Failure<CreateResponse<RegisterPermissionResponse>>(PermissionErrors.ErrorCreating);
+      return Result.Failure<CreateResponse<CreatePermissionResponse>>(PermissionErrors.ErrorCreating);
 
-    var result = CreateResponse<RegisterPermissionResponse>.Success(
-      RegisterPermissionResponse.FromEntity(newPermission),
+    var result = CreateResponse<CreatePermissionResponse>.Success(
+      CreatePermissionResponse.FromEntity(newPermission),
       newPermission.Id.Value
     );
 

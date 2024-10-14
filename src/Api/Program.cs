@@ -3,9 +3,13 @@ using Api.Extensions;
 using Application.IoC;
 using Asp.Versioning.ApiExplorer;
 using Infrastructure.IoC;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// IoC configuration
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();
 
@@ -22,9 +26,10 @@ builder.Services.AddCors(options =>
   });
 });
 
-// IoC configuration
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+  options.SuppressModelStateInvalidFilter = true;
+});
 
 var app = builder.Build();
 

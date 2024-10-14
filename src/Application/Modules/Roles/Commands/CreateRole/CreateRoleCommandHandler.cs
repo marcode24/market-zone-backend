@@ -1,17 +1,17 @@
-using Application.Abstractions.Messaging;
+namespace Application.Modules.Roles.Commands.CreateRole;
+
 using Domain.Abstractions;
 using Domain.Entities.Permissions;
 using Domain.Entities.Permissions.ObjectValues;
 using Domain.Repositories.Permissions;
 using Domain.Repositories.Roles;
-using Application.Modules.Roles.Commands.RegisterRole;
 using Domain.Entities.Roles;
 using Domain.Shared.ValueObjects;
 using Application.Core.Responses;
-using Application.Modules.Permissions.Commands.RegisterPermission;
+using Application.Abstractions.Messaging;
 
 internal class RegisterRoleCommandHandler
-  : ICommandHandler<RegisterRoleCommand, CreateResponse<RegisterRoleResponse>>
+  : ICommandHandler<CreateRoleCommand, CreateResponse<CreateRoleResponse>>
 {
   private readonly IPermissionRepository _permissionRepository;
   private readonly IRoleRepository _roleRepository;
@@ -27,8 +27,8 @@ internal class RegisterRoleCommandHandler
     _unitOfWork = unitOfWork;
   }
 
-  public async Task<Result<CreateResponse<RegisterRoleResponse>>> Handle(
-    RegisterRoleCommand roleCommand,
+  public async Task<Result<CreateResponse<CreateRoleResponse>>> Handle(
+    CreateRoleCommand roleCommand,
     CancellationToken cancellationToken)
   {
     List<Permission> permissions = [];
@@ -38,7 +38,7 @@ internal class RegisterRoleCommandHandler
         .GetByIdAsync(new PermissionId(permissionId), cancellationToken);
 
       if (permission is null)
-        return Result.Failure<CreateResponse<RegisterRoleResponse>>(PermissionErrors.ManyNotFound);
+        return Result.Failure<CreateResponse<CreateRoleResponse>>(PermissionErrors.ManyNotFound);
 
       permissions.Add(permission);
     }
@@ -52,10 +52,10 @@ internal class RegisterRoleCommandHandler
     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
     if (newRole.Id is null)
-      return Result.Failure<CreateResponse<RegisterRoleResponse>>(RoleErrors.ErrorCreating);
+      return Result.Failure<CreateResponse<CreateRoleResponse>>(RoleErrors.ErrorCreating);
 
-    var result = CreateResponse<RegisterRoleResponse>.Success(
-      RegisterRoleResponse.FromEntity(newRole),
+    var result = CreateResponse<CreateRoleResponse>.Success(
+      CreateRoleResponse.FromEntity(newRole),
       newRole.Id.Value
     );
 

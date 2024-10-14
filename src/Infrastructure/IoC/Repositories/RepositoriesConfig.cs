@@ -2,6 +2,7 @@ using Domain.Abstractions;
 using Domain.Repositories.Permissions;
 using Domain.Repositories.Roles;
 using Domain.Repositories.Users;
+using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories.Specific.Permissions;
 using Infrastructure.Persistence.Repositories.Specific.Roles;
 using Infrastructure.Persistence.Repositories.Specific.Users;

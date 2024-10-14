@@ -10,11 +10,9 @@ internal sealed class RegisterUserCommandValidator
   public RegisterUserCommandValidator()
   {
     RuleFor(user => user.Name)
-      // .FieldRequired(NameFields.Name)
-      // .MinLength(3, NameFields.Name)
-      // .MaxLength(50, NameFields.Name);
-      .NotEmpty()
-      .WithMessage("Nombre es requerido");
+      .Required(NameFields.Name)
+      .MinLength(3, NameFields.Name)
+      .MaxLength(50, NameFields.Name);
   }
 }
 

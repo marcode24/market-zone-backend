@@ -1,4 +1,4 @@
-namespace Infrastructure;
+namespace Infrastructure.Persistence;
 
 using Application.Abstractions.Clock;
 using Domain.Abstractions;

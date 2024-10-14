@@ -1,8 +1,8 @@
-namespace Application.Modules.Permissions.Commands.RegisterPermission;
+namespace Application.Modules.Permissions.DTOs.Responses;
 
 using Domain.Entities.Permissions;
 
-public record RegisterPermissionResponse(
+public record CreatePermissionResponse(
   int Id,
   string Name,
   string Type,
@@ -10,14 +10,12 @@ public record RegisterPermissionResponse(
   DateTime CreatedAt
 )
 {
-  public static RegisterPermissionResponse FromEntity(Permission permission)
-  {
-    return new RegisterPermissionResponse(
+  public static CreatePermissionResponse FromEntity(Permission permission) =>
+    new(
       permission.Id!.Value,
       permission.Name!.Value,
       permission.Type!.Value,
       permission.IsActive!,
       permission.CreatedAt!
     );
-  }
 }

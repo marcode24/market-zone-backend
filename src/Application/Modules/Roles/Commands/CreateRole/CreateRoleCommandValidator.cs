@@ -3,15 +3,15 @@ using Application.Validations;
 using Domain.Utilities;
 using FluentValidation;
 
-namespace Application.Modules.Roles.Commands.RegisterRole;
+namespace Application.Modules.Roles.Commands.CreateRole;
 
-internal sealed class RegisterRoleCommandValidator
-  : AbstractValidator<RegisterRoleCommand>
+internal sealed class CreateRoleCommandValidator
+  : AbstractValidator<CreateRoleCommand>
 {
-  public RegisterRoleCommandValidator()
+  public CreateRoleCommandValidator()
   {
     RuleFor(user => user.Name)
-      .FieldRequired(NameFields.Name)
+      .Required(NameFields.Name)
       .MinLength(RoleConfigurations.NameMinLength, NameFields.Name)
       .MaxLength(RoleConfigurations.NameMaxLength, NameFields.Name);
   }
@@ -20,5 +20,5 @@ internal sealed class RegisterRoleCommandValidator
 internal static class NameFields
 {
   public static string Name { get; } = ValidationHelpers
-    .GetDisplayName<RegisterRoleCommand>(r => r.Name);
+    .GetDisplayName<CreateRoleCommand>(r => r.Name);
 }

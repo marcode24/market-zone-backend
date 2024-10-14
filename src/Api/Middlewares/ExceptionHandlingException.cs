@@ -56,7 +56,7 @@ public class ExceptionHandlingMiddleware
         title: "One or more validation errors occurred.",
         type: "https://tools.ietf.org/html/rfc7231#section-6.5.1",
         detail: validationException.Message,
-        errors: validationException.Errors
+        errors: validationException.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }).ToArray()
       ),
       _ => new ExceptionDetails(
         statusCode: StatusCodes.Status500InternalServerError,

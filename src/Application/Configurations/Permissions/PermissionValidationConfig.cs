@@ -3,9 +3,9 @@ namespace Application.Configurations.Permissions;
 using Application.Configurations.Common;
 using Domain.Entities.Permissions;
 
-public static class PermissionConfigurations
+public static class PermissionValidationConfig
 {
-  static PermissionConfigurations()
+  static PermissionValidationConfig()
   {
     EntityConfigurations.AddEntityConfig(nameof(Permission), new Dictionary<string, EntityConfigurations.PropertyConfig>
     {

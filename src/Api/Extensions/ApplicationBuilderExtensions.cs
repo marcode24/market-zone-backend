@@ -1,5 +1,5 @@
 using Api.Middlewares;
-using Infrastructure;
+using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Extensions;

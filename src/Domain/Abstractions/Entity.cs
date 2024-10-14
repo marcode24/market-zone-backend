@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace Domain.Abstractions;
 
 public abstract class Entity<TEntityId> : IEntity
@@ -14,7 +16,11 @@ public abstract class Entity<TEntityId> : IEntity
     CreatedAt = createdAt;
     UpdatedAt = updatedAt;
   }
+
+  [DisplayName("id")]
   public TEntityId? Id { get; init; }
+
+  [DisplayName("activo")]
   public bool IsActive { get; protected set; } = true;
   public bool IsDeleted { get; protected set; } = false;
   public DateTime CreatedAt { get; protected set; }
@@ -23,7 +29,7 @@ public abstract class Entity<TEntityId> : IEntity
   public IReadOnlyList<IDomainEvent> GetDomainEvents() => domainEvents.ToList().AsReadOnly();
   public void ClearDomainEvents() => domainEvents.Clear();
   public void UpdateTimestamps() => UpdatedAt = DateTime.UtcNow;
-  public void ChangeStatus() => IsActive = !IsActive;
+  public void ChangeStatus(bool newStatus) => IsActive = newStatus;
   public void SoftDelete()
   {
     IsDeleted = true;

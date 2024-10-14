@@ -1,6 +1,8 @@
 using Api.Common;
 using Api.Utils;
+using Application.Filters;
 using Application.Modules.Permissions.Commands.CreatePermission;
+using Application.Modules.Permissions.Commands.UpdatePermission;
 using Application.Modules.Permissions.DTOs.Requests;
 using Asp.Versioning;
 using MediatR;
@@ -32,6 +34,29 @@ public class PermissionsController : ControllerBase
     );
 
     var result = await _sender.Send(registerPermissionCommand, cancellationToken);
+
+    return result.IsSuccess
+      ? Ok(result.Value)
+      : BadRequest(result.Error);
+  }
+
+  [HttpPut("update/{id}")]
+  [MapToApiVersion(ApiVersions.V1)]
+  [ServiceFilter(typeof(ValidateIdAttribute))]
+  public async Task<IActionResult> Update(
+    [FromRoute] string id,
+    [FromBody] UpdatePermissionRequest request,
+    CancellationToken cancellationToken)
+  {
+
+    var updatePermissionCommand = new UpdatePermissionCommand(
+      int.Parse(id),
+      request.Name,
+      request.Type,
+      request.IsActive
+    );
+
+    var result = await _sender.Send(updatePermissionCommand, cancellationToken);
 
     return result.IsSuccess
       ? Ok(result.Value)
