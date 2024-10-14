@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241014170650_InitialCreate")]
+    [Migration("20241014192058_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -269,10 +269,10 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3939152d-c2c1-404c-afd0-26f9ee464971"),
+                            Id = new Guid("7860ab9a-4b11-4118-a4b5-36c648b6b6fa"),
                             Content = "Content",
-                            OccurredOnUtc = new DateTime(2024, 10, 14, 17, 6, 49, 488, DateTimeKind.Utc).AddTicks(5393),
-                            ProcessedOnUtc = new DateTime(2024, 10, 14, 17, 6, 49, 488, DateTimeKind.Utc).AddTicks(5397),
+                            OccurredOnUtc = new DateTime(2024, 10, 14, 19, 20, 58, 69, DateTimeKind.Utc).AddTicks(7171),
+                            ProcessedOnUtc = new DateTime(2024, 10, 14, 19, 20, 58, 69, DateTimeKind.Utc).AddTicks(7174),
                             Type = "Type"
                         });
                 });

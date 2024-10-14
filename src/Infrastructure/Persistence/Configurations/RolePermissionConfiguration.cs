@@ -34,5 +34,7 @@ internal sealed class RolePermissionConfiguration : IEntityTypeConfiguration<Rol
     builder.HasIndex(rolePermission => rolePermission.RoleId);
     builder.HasIndex(rolePermission => rolePermission.PermissionId);
 
+    builder.HasQueryFilter(rolePermission => !rolePermission.Role!.IsDeleted);
+
   }
 }

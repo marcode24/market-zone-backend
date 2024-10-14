@@ -60,5 +60,7 @@ internal sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
           .HasOne(p => p.Role)
           .WithMany(p => p.RolePermissions)
           .HasForeignKey(p => p.RoleId));
+
+    builder.HasQueryFilter(role => !role.IsDeleted);
   }
 }

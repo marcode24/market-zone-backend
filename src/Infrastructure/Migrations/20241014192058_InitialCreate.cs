@@ -137,7 +137,7 @@ namespace Infrastructure.Migrations
                 schema: "outbox",
                 table: "outbox_messages",
                 columns: new[] { "id", "content", "error_message", "error_on_utc", "occurred_on_utc", "processed_on_utc", "type" },
-                values: new object[] { new Guid("3939152d-c2c1-404c-afd0-26f9ee464971"), "Content", null, null, new DateTime(2024, 10, 14, 17, 6, 49, 488, DateTimeKind.Utc).AddTicks(5393), new DateTime(2024, 10, 14, 17, 6, 49, 488, DateTimeKind.Utc).AddTicks(5397), "Type" });
+                values: new object[] { new Guid("7860ab9a-4b11-4118-a4b5-36c648b6b6fa"), "Content", null, null, new DateTime(2024, 10, 14, 19, 20, 58, 69, DateTimeKind.Utc).AddTicks(7171), new DateTime(2024, 10, 14, 19, 20, 58, 69, DateTimeKind.Utc).AddTicks(7174), "Type" });
 
             migrationBuilder.CreateIndex(
                 name: "ix_roles_permissions_permission_id",

@@ -65,4 +65,9 @@ public sealed class Permission : Entity<PermissionId>
     if (hasUpdated)
       UpdateTimestamps();
   }
+
+  public void Delete()
+  {
+    SoftDelete();
+  }
 }

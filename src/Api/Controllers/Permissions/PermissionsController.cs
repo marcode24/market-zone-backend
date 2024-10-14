@@ -2,6 +2,7 @@ using Api.Common;
 using Api.Utils;
 using Application.Filters;
 using Application.Modules.Permissions.Commands.CreatePermission;
+using Application.Modules.Permissions.Commands.DeletePermission;
 using Application.Modules.Permissions.Commands.UpdatePermission;
 using Application.Modules.Permissions.DTOs.Requests;
 using Asp.Versioning;
@@ -57,6 +58,22 @@ public class PermissionsController : ControllerBase
     );
 
     var result = await _sender.Send(updatePermissionCommand, cancellationToken);
+
+    return result.IsSuccess
+      ? Ok(result.Value)
+      : BadRequest(result.Error);
+  }
+
+  [HttpDelete("delete/{id}")]
+  [MapToApiVersion(ApiVersions.V1)]
+  [ServiceFilter(typeof(ValidateIdAttribute))]
+  public async Task<IActionResult> Delete(
+    [FromRoute] string id,
+    CancellationToken cancellationToken)
+  {
+    var deletePermissionCommand = new DeletePermissionCommand(int.Parse(id));
+
+    var result = await _sender.Send(deletePermissionCommand, cancellationToken);
 
     return result.IsSuccess
       ? Ok(result.Value)

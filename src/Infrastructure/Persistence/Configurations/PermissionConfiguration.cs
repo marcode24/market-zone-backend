@@ -85,5 +85,7 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
           .HasOne(p => p.Permission)
           .WithMany(p => p.RolePermissions)
           .HasForeignKey(p => p.PermissionId));
+
+    builder.HasQueryFilter(permission => !permission.IsDeleted);
   }
 }
