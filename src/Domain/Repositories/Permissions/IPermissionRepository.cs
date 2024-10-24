@@ -9,4 +9,5 @@ public interface IPermissionRepository
   void Add(Permission permission);
   Task<Permission?> GetByIdAsync(PermissionId id, CancellationToken cancellationToken);
   Task<Permission?> GetByIdIncludingDeletedAsync(PermissionId id, CancellationToken cancellationToken);
+  IQueryable<Permission> Query();
 }

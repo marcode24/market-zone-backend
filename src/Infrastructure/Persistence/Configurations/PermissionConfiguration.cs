@@ -34,7 +34,7 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
       .IsRequired()
       .HasConversion(
         permission => permission!.Value,
-        value => new Name(value)
+        value => Name.New(value)
       );
 
     builder

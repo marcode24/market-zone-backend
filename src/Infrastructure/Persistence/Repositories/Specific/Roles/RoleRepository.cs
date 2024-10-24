@@ -1,13 +1,13 @@
 using Domain.Entities.Roles;
 using Domain.Entities.Roles.ValueObjects;
 using Domain.Repositories.Roles;
-using Infrastructure.Repositories.Base;
+using Infrastructure.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories.Specific.Roles;
 
 internal sealed class RoleRepository
-  : Repository<Role, RoleId>, IRoleRepository
+  : EFCoreRepository<Role, RoleId>, IRoleRepository
 {
   public RoleRepository(ApplicationDbContext dbContext)
     : base(dbContext) { }

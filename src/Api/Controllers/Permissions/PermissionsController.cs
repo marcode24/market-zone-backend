@@ -6,7 +6,9 @@ using Application.Modules.Permissions.Commands.DeletePermission;
 using Application.Modules.Permissions.Commands.RestorePermission;
 using Application.Modules.Permissions.Commands.UpdatePermission;
 using Application.Modules.Permissions.DTOs.Requests;
+using Application.Modules.Permissions.Queries.GetPermissions;
 using Asp.Versioning;
+using Domain.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +24,29 @@ public class PermissionsController : ControllerBase
   public PermissionsController(ISender sender)
   {
     _sender = sender;
+  }
+
+  [HttpGet("")]
+  [MapToApiVersion(ApiVersions.V1)]
+  public async Task<IActionResult> GetPermissions(
+    [FromQuery] PaginationParams paginationParams,
+    CancellationToken cancellationToken)
+  {
+    var getPermissionsQuery = new GetPermissionsQuery
+    {
+      GetAll = paginationParams.GetAll,
+      Search = paginationParams.Search,
+      OrderBy = paginationParams.OrderBy,
+      OrderAsc = paginationParams.OrderAsc,
+      PageNumber = paginationParams.PageNumber,
+      PageSize = paginationParams.PageSize,
+    };
+
+    var result = await _sender.Send(getPermissionsQuery, cancellationToken);
+
+    return result.IsSuccess
+      ? Ok(result.Value)
+      : BadRequest(result.Error);
   }
 
   [HttpPost("register")]

@@ -1,4 +1,8 @@
+using Application.Abstractions.Data;
+using Application.Abstractions.Providers;
+using Infrastructure.Abstractions.Table;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +30,12 @@ public static class DatabaseConfig
             LogLevel.Information)
           .EnableSensitiveDataLogging();
       });
+
+    services.AddSingleton<ISqlConnectionFactory>(_ =>
+      new SqlConnectionFactory(connectionString));
+
+    services.AddScoped<ITableNameProvider, TableNameProvider>();
+
     return services;
   }
 }

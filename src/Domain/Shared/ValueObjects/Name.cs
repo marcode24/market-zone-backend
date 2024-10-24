@@ -1,6 +1,8 @@
+using System.Net.NetworkInformation;
+
 namespace Domain.Shared.ValueObjects;
 
-public record Name(string Value) : BaseValueObject(Value)
+public record Name(string Value)
 {
   public static Name New(string value)
   {
@@ -11,4 +13,6 @@ public record Name(string Value) : BaseValueObject(Value)
   }
 
   public override string ToString() => Value;
+
+  public static implicit operator string(Name name) => name.Value;
 }

@@ -1,12 +1,13 @@
 using Domain.Entities.Users;
 using Domain.Entities.Users.ValueObjects;
 using Domain.Repositories.Users;
-using Infrastructure.Repositories.Base;
+using Infrastructure.Persistence.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories.Specific.Users;
 
-internal sealed class UserRepository : Repository<User, UserId>, IUserRepository
+internal sealed class UserRepository
+  : EFCoreRepository<User, UserId>, IUserRepository
 {
   public UserRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 

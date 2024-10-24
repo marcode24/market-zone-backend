@@ -1,7 +1,10 @@
 namespace Application.IoC;
 
 using Application.Abstractions.Behaviors;
+using Application.Abstractions.Providers;
 using Application.Filters;
+using Application.IoC.Mapping;
+using Application.IoC.Services;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +22,9 @@ public static class DependencyInjection
     });
     // services.AddValidatorsFromAssemblyContaining<CreatePermissionCommandValidator>();
     services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+
+    services.AddServicesConfig();
+    services.AddMappingConfig();
 
     return services;
   }

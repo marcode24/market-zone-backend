@@ -266,10 +266,10 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7860ab9a-4b11-4118-a4b5-36c648b6b6fa"),
+                            Id = new Guid("6775c857-c6ad-4d70-8fbc-5051523b5a18"),
                             Content = "Content",
-                            OccurredOnUtc = new DateTime(2024, 10, 14, 19, 20, 58, 69, DateTimeKind.Utc).AddTicks(7171),
-                            ProcessedOnUtc = new DateTime(2024, 10, 14, 19, 20, 58, 69, DateTimeKind.Utc).AddTicks(7174),
+                            OccurredOnUtc = new DateTime(2024, 10, 16, 23, 46, 39, 951, DateTimeKind.Utc).AddTicks(4768),
+                            ProcessedOnUtc = new DateTime(2024, 10, 16, 23, 46, 39, 951, DateTimeKind.Utc).AddTicks(4770),
                             Type = "Type"
                         });
                 });
