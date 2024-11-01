@@ -1,5 +1,7 @@
+using Application.Validations.FileHandling;
 using Domain.Shared.Extensions;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Validations;
 
@@ -59,5 +61,22 @@ public static class CustomValidations
     return ruleBuilder
     .Must(value => string.IsNullOrWhiteSpace(value) || double.TryParse(value, out _))
       .WithMessage(ValidationsMessages.BeANumber(field));
+  }
+
+  public static IRuleBuilderOptions<T, IFormFile> FileRequired<T>(
+    this IRuleBuilder<T, IFormFile> ruleBuilder)
+  {
+    return ruleBuilder
+      .Must(file => file is not null && file.Length > 0)
+      .WithMessage(ValidationsMessages.FileRequired);
+  }
+
+  public static IRuleBuilderOptions<T, IFormFile> BeExcelFile<T>(
+    this IRuleBuilder<T, IFormFile> ruleBuilder)
+  {
+    return ruleBuilder
+      .Must(ExcelFileValidator.IsExcelFile)
+      .When(file => file is not null)
+      .WithMessage(ValidationsMessages.BeExcelFile);
   }
 }

@@ -37,4 +37,9 @@ internal abstract class EFCoreRepository<TEntity, TEntityId>
   {
     _dbContext.Set<TEntity>().Add(entity);
   }
+
+  public virtual void AddRange(IEnumerable<TEntity> entities)
+  {
+    _dbContext.Set<TEntity>().AddRange(entities);
+  }
 }

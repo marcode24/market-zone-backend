@@ -6,19 +6,24 @@ public static class EntityErrors
 {
   public static readonly Error NotFound = new(
       "NOT_FOUND",
-      "{0} not found."
+      "{0} not found"
     );
   public static readonly Error ErrorCreating = new(
     "ERROR_CREATING",
-    "Error creating {0}."
+    "Error creating {0}"
   );
   public static readonly Error SuccessCreating = new(
     "SUCCESS_CREATING",
-    "{0} created successfully."
+    "{0} created successfully"
   );
 
   public static readonly Error NotDeleted = new(
     "NOT_DELETED",
-    "{0} is not deleted."
+    "{0} is not deleted"
+  );
+
+  public static readonly Error UnsopportedFormatExcel = new(
+    "UNSOPPORTED_FORMAT",
+    "{0} file format is not compatible with Excel"
   );
 }

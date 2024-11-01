@@ -1,6 +1,7 @@
 using Api.Common;
 using Api.Utils;
 using Application.Filters;
+using Application.Modules.Permissions.Commands.BulkCreatePermission;
 using Application.Modules.Permissions.Commands.CreatePermission;
 using Application.Modules.Permissions.Commands.DeletePermission;
 using Application.Modules.Permissions.Commands.RestorePermission;
@@ -61,6 +62,23 @@ public class PermissionsController : ControllerBase
     );
 
     var result = await _sender.Send(registerPermissionCommand, cancellationToken);
+
+    return result.IsSuccess
+      ? Ok(result.Value)
+      : BadRequest(result.Error);
+  }
+
+  [HttpPost("register/bulk")]
+  [MapToApiVersion(ApiVersions.V1)]
+  public async Task<IActionResult> BulkRegister(
+    [FromForm] BulkCreatePermissionRequest request,
+    CancellationToken cancellationToken)
+  {
+    var bulkRegisterPermissionCommand = new BulkCreatePermissionCommand(
+      request.File
+    );
+
+    var result = await _sender.Send(bulkRegisterPermissionCommand, cancellationToken);
 
     return result.IsSuccess
       ? Ok(result.Value)

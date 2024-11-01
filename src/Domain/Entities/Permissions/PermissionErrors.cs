@@ -9,9 +9,14 @@ public static class PermissionErrors
     "MANY_NOT_FOUND",
     "One or more permissions not found."
   );
+  public static readonly Error ErrorCreatingBulk = new(
+    "ERROR_CREATING_BULK",
+    "Error creating permissions"
+  );
 
   public static readonly Error NotFound = EntityErrors.NotFound.Format(nameof(Permission));
   public static readonly Error ErrorCreating = EntityErrors.ErrorCreating.Format(nameof(Permission));
   public static readonly Error SuccessCreating = EntityErrors.SuccessCreating.Format(nameof(Permission));
   public static readonly Error NotDeleted = EntityErrors.NotDeleted.Format(nameof(Permission));
+  public static readonly Error UnsopportedFormatExcel = EntityErrors.UnsopportedFormatExcel.Format(nameof(Permission));
 }

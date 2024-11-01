@@ -23,4 +23,9 @@ public static class EntityMessages
     "DELETED",
     "{0} was deleted successfully."
   );
+
+  public static readonly Success BulkCreated = new(
+    "BULK_CREATED",
+    "{0} were created successfully."
+  );
 }

@@ -8,4 +8,6 @@ public static class ValidationsMessages
   public static string EmailFormat(string field) => $"El campo {field} no tiene un formato válido de email.";
   public static string BeABoolean(string field) => $"El campo {field} debe ser un valor booleano.";
   public static string BeANumber(string field) => $"El campo {field} debe ser un número.";
+  public static string BeExcelFile => "No es un archivo de excel válido.";
+  public static string FileRequired => "El archivo es requerido.";
 }
