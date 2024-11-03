@@ -8,6 +8,7 @@ using Application.Modules.Permissions.Commands.RestorePermission;
 using Application.Modules.Permissions.Commands.UpdatePermission;
 using Application.Modules.Permissions.DTOs.Requests;
 using Application.Modules.Permissions.Queries.GetPermissions;
+using Application.Modules.Permissions.Queries.GetPermissionTemplate;
 using Asp.Versioning;
 using Domain.Shared;
 using MediatR;
@@ -47,6 +48,21 @@ public class PermissionsController : ControllerBase
 
     return result.IsSuccess
       ? Ok(result.Value)
+      : BadRequest(result.Error);
+  }
+
+  [HttpGet("template")]
+  [MapToApiVersion(ApiVersions.V1)]
+  public async Task<IActionResult> GetTemplate(
+    CancellationToken cancellationToken
+  )
+  {
+    var permissionTemplateQuery = new GetPermissionTemplateQuery();
+
+    var result = await _sender.Send(permissionTemplateQuery, cancellationToken);
+
+    return result.IsSuccess
+      ? File(result.Value, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "PermisionTemplate.xlsx")
       : BadRequest(result.Error);
   }
 
