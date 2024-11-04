@@ -10,4 +10,5 @@ public static class ValidationsMessages
   public static string BeANumber(string field) => $"El campo {field} debe ser un número.";
   public static string BeExcelFile => "No es un archivo de excel válido.";
   public static string FileRequired => "El archivo es requerido.";
+  public static string BeExcelFileTemplate => "El archivo no coincide con la plantilla requerida.";
 }

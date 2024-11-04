@@ -10,7 +10,8 @@ public sealed class BulkCreatePermissionCommandValidator : AbstractValidator<Bul
     RuleFor(command => command.ExcelFile)
         .Cascade(CascadeMode.Stop)
         .FileRequired()
-        .BeExcelFile();
+        .BeExcelFile()
+        .BeExcelFileTemplate();
   }
 
 }

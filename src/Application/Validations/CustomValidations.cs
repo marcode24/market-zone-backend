@@ -2,6 +2,7 @@ using Application.Validations.FileHandling;
 using Domain.Shared.Extensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using NPOI.SS.Formula.Functions;
 
 namespace Application.Validations;
 
@@ -78,5 +79,15 @@ public static class CustomValidations
       .Must(ExcelFileValidator.IsExcelFile)
       .When(file => file is not null)
       .WithMessage(ValidationsMessages.BeExcelFile);
+  }
+
+  public static IRuleBuilderOptions<T, IFormFile> BeExcelFileTemplate<T>(
+    this IRuleBuilder<T, IFormFile> ruleBuilder
+  )
+  {
+    return ruleBuilder
+      .Must(file => ExcelFileValidator.ValidatePermissionTemplate(file.OpenReadStream()))
+      .When(file => file is not null)
+      .WithMessage(ValidationsMessages.BeExcelFileTemplate);
   }
 }
