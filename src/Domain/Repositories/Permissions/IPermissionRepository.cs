@@ -11,4 +11,5 @@ public interface IPermissionRepository
   Task<Permission?> GetByIdIncludingDeletedAsync(PermissionId id, CancellationToken cancellationToken);
   IQueryable<Permission> Query();
   void AddRange(IEnumerable<Permission> permissions);
+  Task<List<Permission>> GetAllAsync(CancellationToken cancellationToken);
 }

@@ -42,4 +42,10 @@ internal abstract class EFCoreRepository<TEntity, TEntityId>
   {
     _dbContext.Set<TEntity>().AddRange(entities);
   }
+
+  public async virtual Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken)
+  {
+    return await _dbContext.Set<TEntity>()
+      .ToListAsync(cancellationToken);
+  }
 }
