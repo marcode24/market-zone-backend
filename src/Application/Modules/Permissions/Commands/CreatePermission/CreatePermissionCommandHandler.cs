@@ -1,3 +1,4 @@
+using System.Net;
 using Application.Abstractions.Messaging;
 using Application.Core.Responses;
 using Application.Modules.Permissions.DTOs.Responses;
@@ -9,21 +10,15 @@ using Domain.Shared.ValueObjects;
 
 namespace Application.Modules.Permissions.Commands.CreatePermission;
 
-internal class CreatePermissionCommandHandler
-  : ICommandHandler<CreatePermissionCommand, CreateResponse<CreatePermissionResponse>>
+internal class CreatePermissionCommandHandler(
+  IPermissionRepository permissionRepository,
+  IUnitOfWork unitOfWork)
+    : ICommandHandler<CreatePermissionCommand, CreatePermissionResponse>
 {
-  private readonly IPermissionRepository _permissionRepository;
-  private readonly IUnitOfWork _unitOfWork;
+  private readonly IPermissionRepository _permissionRepository = permissionRepository;
+  private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-  public CreatePermissionCommandHandler(
-    IPermissionRepository permissionRepository,
-    IUnitOfWork unitOfWork)
-  {
-    _permissionRepository = permissionRepository;
-    _unitOfWork = unitOfWork;
-  }
-
-  public async Task<Result<CreateResponse<CreatePermissionResponse>>> Handle(
+  public async Task<Response<CreatePermissionResponse>> Handle(
     CreatePermissionCommand request,
     CancellationToken cancellationToken)
   {
@@ -36,14 +31,14 @@ internal class CreatePermissionCommandHandler
     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
     if (newPermission.Id is null)
-      return Result.Failure<CreateResponse<CreatePermissionResponse>>(PermissionErrors.ErrorCreating);
+      return Response.Failure<CreatePermissionResponse>(
+        error: PermissionErrors.ErrorCreating,
+        statusCode: (int)HttpStatusCode.InternalServerError
+      );
 
-    var result = CreateResponse<CreatePermissionResponse>.Success(
+    return Response.Success(
       CreatePermissionResponse.FromEntity(newPermission),
       PermissionMessages.Created.Message,
-      newPermission.Id.Value
-    );
-
-    return Result.Success(result);
+      (int)HttpStatusCode.Created);
   }
 }

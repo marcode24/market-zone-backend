@@ -7,4 +7,4 @@ namespace Application.Modules.Permissions.Commands.CreatePermission;
 public record CreatePermissionCommand(
   string Name,
   string Type
-) : ICommand<CreateResponse<CreatePermissionResponse>>, IPermissionCommand;
+) : ICommand<CreatePermissionResponse>, IPermissionCommand;

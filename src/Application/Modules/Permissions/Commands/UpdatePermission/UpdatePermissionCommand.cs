@@ -1,5 +1,4 @@
 using Application.Abstractions.Messaging;
-using Application.Core.Responses;
 using Application.Modules.Permissions.DTOs.Responses;
 using Application.Modules.Permissions.Interfaces;
 
@@ -10,4 +9,4 @@ public record UpdatePermissionCommand(
   string Name,
   string Type,
   bool? IsActive
-) : ICommand<UpdateResponse<UpdatePermissionResponse>>, IPermissionCommand;
+) : ICommand<UpdatePermissionResponse>, IPermissionCommand;

@@ -1,4 +1,4 @@
-using Domain.Abstractions;
+using Application.Core.Responses;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -7,7 +7,7 @@ namespace Application.Abstractions.Behaviors;
 public class LoggingBehavior<TRequest, TResponse>
 : IPipelineBehavior<TRequest, TResponse>
 where TRequest : IBaseRequest
-where TResponse : Result
+where TResponse : Response
 {
   private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
 

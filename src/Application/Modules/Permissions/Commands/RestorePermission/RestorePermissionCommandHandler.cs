@@ -1,5 +1,6 @@
 namespace Application.Modules.Permissions.Commands.RestorePermission;
 
+using System.Net;
 using Application.Abstractions.Messaging;
 using Application.Core.Responses;
 using Application.Modules.Permissions.DTOs.Responses;
@@ -9,7 +10,7 @@ using Domain.Entities.Permissions.ObjectValues;
 using Domain.Repositories.Permissions;
 
 internal class RestorePermissionCommandHandler
-  : ICommandHandler<RestorePermissionCommand, CreateResponse<RestorePermissionResponse>>
+  : ICommandHandler<RestorePermissionCommand, RestorePermissionResponse>
 {
   private readonly IPermissionRepository _permissionRepository;
   private readonly IUnitOfWork _unitOfWork;
@@ -22,7 +23,7 @@ internal class RestorePermissionCommandHandler
     _unitOfWork = unitOfWork;
   }
 
-  public async Task<Result<CreateResponse<RestorePermissionResponse>>> Handle(
+  public async Task<Response<RestorePermissionResponse>> Handle(
     RestorePermissionCommand request,
     CancellationToken cancellationToken)
   {
@@ -31,26 +32,26 @@ internal class RestorePermissionCommandHandler
       cancellationToken);
 
     if (permission is null)
-      return Result.Failure<CreateResponse<RestorePermissionResponse>>(PermissionErrors.NotFound);
+      return Response.Failure<RestorePermissionResponse>(
+        error: PermissionErrors.NotFound,
+        statusCode: (int)HttpStatusCode.NotFound
+      );
 
     if (permission.IsDeleted is false)
-      return Result.Success(
-        CreateResponse<RestorePermissionResponse>.Success(
-          RestorePermissionResponse.FromEntity(permission),
-          PermissionErrors.NotDeleted.Message,
-          permission.Id!.Value
-        )
+      return Response.Success(
+        RestorePermissionResponse.FromEntity(permission),
+        PermissionErrors.NotDeleted.Message,
+        (int)HttpStatusCode.OK
       );
 
     permission.RestoreSoftDelete();
 
     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-    var result = CreateResponse<RestorePermissionResponse>.Success(
+    return Response.Success(
       RestorePermissionResponse.FromEntity(permission),
-      PermissionMessages.Restored.Message
+      PermissionMessages.Restored.Message,
+      (int)HttpStatusCode.OK
     );
-
-    return Result.Success(result);
   }
 }
