@@ -1,3 +1,4 @@
+using System.Net;
 using Application.Abstractions.Messaging;
 using Application.Core.Responses;
 using Application.Modules.Permissions.DTOs.Responses;
@@ -8,21 +9,15 @@ using Domain.Repositories.Permissions;
 
 namespace Application.Modules.Permissions.Commands.DeletePermission;
 
-internal class DeletePermissionCommandHandler
-  : ICommandHandler<DeletePermissionCommand, CreateResponse<DeletePermissionResponse>>
+internal class DeletePermissionCommandHandler(
+  IPermissionRepository permissionRepository,
+  IUnitOfWork unitOfWork)
+    : ICommandHandler<DeletePermissionCommand, DeletePermissionResponse>
 {
-  private readonly IPermissionRepository _permissionRepository;
-  private readonly IUnitOfWork _unitOfWork;
+  private readonly IPermissionRepository _permissionRepository = permissionRepository;
+  private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
-  public DeletePermissionCommandHandler(
-    IPermissionRepository permissionRepository,
-    IUnitOfWork unitOfWork)
-  {
-    _permissionRepository = permissionRepository;
-    _unitOfWork = unitOfWork;
-  }
-
-  public async Task<Result<CreateResponse<DeletePermissionResponse>>> Handle(
+  public async Task<Response<DeletePermissionResponse>> Handle(
     DeletePermissionCommand request,
     CancellationToken cancellationToken)
   {
@@ -32,18 +27,19 @@ internal class DeletePermissionCommandHandler
     );
 
     if (permission is null)
-      return Result.Failure<CreateResponse<DeletePermissionResponse>>(PermissionErrors.NotFound);
+      return Response.Failure<DeletePermissionResponse>(
+        error: PermissionErrors.NotFound,
+        statusCode: (int)HttpStatusCode.NotFound
+      );
 
     permission.SoftDelete();
 
     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-    var result = CreateResponse<DeletePermissionResponse>.Success(
+    return Response.Success(
       DeletePermissionResponse.FromEntity(permission),
       PermissionMessages.Deleted.Message,
-      permission.Id!.Value
+      (int)HttpStatusCode.OK
     );
-
-    return Result.Success(result);
   }
 }

@@ -26,6 +26,13 @@ internal abstract class EFCoreRepository<TEntity, TEntityId>
       .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
   }
 
+  public async Task<List<TEntity>> GetByIdsAsync(IEnumerable<TEntityId> ids, CancellationToken cancellationToken)
+  {
+    return await _dbContext.Set<TEntity>()
+      .Where(x => ids.Contains(x.Id))
+      .ToListAsync(cancellationToken);
+  }
+
   public async Task<TEntity?> GetByIdIncludingDeletedAsync(TEntityId id, CancellationToken cancellationToken)
   {
     return await _dbContext.Set<TEntity>()

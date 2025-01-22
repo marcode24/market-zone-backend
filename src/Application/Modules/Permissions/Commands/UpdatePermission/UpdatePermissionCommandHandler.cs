@@ -1,3 +1,4 @@
+using System.Net;
 using Application.Abstractions.Messaging;
 using Application.Core.Responses;
 using Application.Modules.Permissions.DTOs.Responses;
@@ -10,7 +11,7 @@ using Domain.Shared.ValueObjects;
 namespace Application.Modules.Permissions.Commands.UpdatePermission;
 
 internal class UpdatePermissionCommandHandler
-  : ICommandHandler<UpdatePermissionCommand, UpdateResponse<UpdatePermissionResponse>>
+  : ICommandHandler<UpdatePermissionCommand, UpdatePermissionResponse>
 {
   private readonly IPermissionRepository _permissionRepository;
   private readonly IUnitOfWork _unitOfWork;
@@ -23,7 +24,7 @@ internal class UpdatePermissionCommandHandler
     _unitOfWork = unitOfWork;
   }
 
-  public async Task<Result<UpdateResponse<UpdatePermissionResponse>>> Handle(
+  public async Task<Response<UpdatePermissionResponse>> Handle(
     UpdatePermissionCommand request,
     CancellationToken cancellationToken)
   {
@@ -33,7 +34,10 @@ internal class UpdatePermissionCommandHandler
     );
 
     if (permission is null)
-      return Result.Failure<UpdateResponse<UpdatePermissionResponse>>(PermissionErrors.NotFound);
+      return Response.Failure<UpdatePermissionResponse>(
+        error: PermissionErrors.NotFound,
+        statusCode: (int)HttpStatusCode.NotFound
+      );
 
     permission.Update(
       new Name(request.Name),
@@ -43,11 +47,10 @@ internal class UpdatePermissionCommandHandler
 
     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-    var result = UpdateResponse<UpdatePermissionResponse>.Success(
+    return Response.Success(
       UpdatePermissionResponse.FromEntity(permission),
-      PermissionMessages.Updated.Message
+      PermissionMessages.Updated.Message,
+      (int)HttpStatusCode.OK
     );
-
-    return Result.Success(result);
   }
 }

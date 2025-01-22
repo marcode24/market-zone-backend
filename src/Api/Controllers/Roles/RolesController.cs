@@ -32,7 +32,7 @@ public class RolesController : ControllerBase
     var result = await _sender.Send(registerRoleCommand, cancellationToken);
 
     return result.IsSuccess
-      ? Ok(result.Value)
+      ? Ok(result)
       : BadRequest(result.Error);
   }
 }

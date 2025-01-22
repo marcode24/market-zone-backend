@@ -19,14 +19,9 @@ namespace Api.Controllers.Permissions;
 [ApiController]
 [ApiVersion(ApiVersions.V1)]
 [Route(ApiRoutes.PermissionsRoute)]
-public class PermissionsController : ControllerBase
+public class PermissionsController(ISender sender) : ControllerBase
 {
-  private readonly ISender _sender;
-
-  public PermissionsController(ISender sender)
-  {
-    _sender = sender;
-  }
+  private readonly ISender _sender = sender;
 
   [HttpGet("")]
   [MapToApiVersion(ApiVersions.V1)]
@@ -43,11 +38,10 @@ public class PermissionsController : ControllerBase
       PageNumber = paginationParams.PageNumber,
       PageSize = paginationParams.PageSize,
     };
-
     var result = await _sender.Send(getPermissionsQuery, cancellationToken);
 
     return result.IsSuccess
-      ? Ok(result.Value)
+      ? Ok(result)
       : BadRequest(result.Error);
   }
 
@@ -58,11 +52,10 @@ public class PermissionsController : ControllerBase
   )
   {
     var permissionTemplateQuery = new GetPermissionTemplateQuery();
-
     var result = await _sender.Send(permissionTemplateQuery, cancellationToken);
 
     return result.IsSuccess
-      ? File(result.Value, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "PermisionTemplate.xlsx")
+      ? File(result.Result, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "PermisionTemplate.xlsx")
       : BadRequest(result.Error);
   }
 
@@ -76,12 +69,9 @@ public class PermissionsController : ControllerBase
       request.Name,
       request.Type
     );
-
     var result = await _sender.Send(registerPermissionCommand, cancellationToken);
 
-    return result.IsSuccess
-      ? Ok(result.Value)
-      : BadRequest(result.Error);
+    return StatusCode(result.StatusCode, result);
   }
 
   [HttpPost("register/bulk")]
@@ -90,14 +80,11 @@ public class PermissionsController : ControllerBase
     [FromForm] BulkCreatePermissionRequest request,
     CancellationToken cancellationToken)
   {
-    var bulkRegisterPermissionCommand = new BulkCreatePermissionCommand(
-      request.File
-    );
-
+    var bulkRegisterPermissionCommand = new BulkCreatePermissionCommand(request.File);
     var result = await _sender.Send(bulkRegisterPermissionCommand, cancellationToken);
 
     return result.IsSuccess
-      ? Ok(result.Value)
+      ? Ok(result)
       : BadRequest(result.Error);
   }
 
@@ -109,19 +96,15 @@ public class PermissionsController : ControllerBase
     [FromBody] UpdatePermissionRequest request,
     CancellationToken cancellationToken)
   {
-
     var updatePermissionCommand = new UpdatePermissionCommand(
       int.Parse(id),
       request.Name,
       request.Type,
       request.IsActive
     );
-
     var result = await _sender.Send(updatePermissionCommand, cancellationToken);
 
-    return result.IsSuccess
-      ? Ok(result.Value)
-      : BadRequest(result.Error);
+    return StatusCode(result.StatusCode, result);
   }
 
   [HttpDelete("delete/{id}")]
@@ -132,12 +115,9 @@ public class PermissionsController : ControllerBase
     CancellationToken cancellationToken)
   {
     var deletePermissionCommand = new DeletePermissionCommand(int.Parse(id));
-
     var result = await _sender.Send(deletePermissionCommand, cancellationToken);
 
-    return result.IsSuccess
-      ? Ok(result.Value)
-      : BadRequest(result.Error);
+    return StatusCode(result.StatusCode, result);
   }
 
   [HttpPatch("activate/{id}")]
@@ -148,11 +128,8 @@ public class PermissionsController : ControllerBase
     CancellationToken cancellationToken)
   {
     var restorePermissionCommand = new RestorePermissionCommand(int.Parse(id));
-
     var result = await _sender.Send(restorePermissionCommand, cancellationToken);
 
-    return result.IsSuccess
-      ? Ok(result.Value)
-      : BadRequest(result.Error);
+    return StatusCode(result.StatusCode, result);
   }
 }
